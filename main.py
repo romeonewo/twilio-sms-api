@@ -4,7 +4,7 @@ from services.sms import send_sms
 
 app = FastAPI(
     title="Twilio SMS API",
-    description="Send SMS messages using Twilio through a clean FastAPI endpoint",
+    description="A professional API for sending SMS using Twilio and FastAPI.",
     version="1.0.0"
 )
 
