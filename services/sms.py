@@ -1,17 +1,34 @@
-from twilio.rest import Client
-from config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER
+import http.client
+import json
+import os
+from dotenv import load_dotenv
 
-client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+load_dotenv()
+
+API_BASE = os.getenv("INFOBIP_API_BASE")
+API_KEY = os.getenv("INFOBIP_API_KEY")
+SENDER = os.getenv("INFOBIP_SENDER_NUMBER")
 
 def send_sms(to: str, message: str) -> dict:
-    sent_message = client.messages.create(
-        body=message,
-        from_=TWILIO_PHONE_NUMBER,
-        to=to
-    )
-    return {
-        "sid": sent_message.sid,
-        "status": sent_message.status,
-        "to": sent_message.to,
-        "message": message
+    conn = http.client.HTTPSConnection(API_BASE)
+
+    payload = json.dumps({
+        "messages": [
+            {
+                "destinations": [{"to": to}],
+                "from": SENDER,
+                "text": message
+            }
+        ]
+    })
+
+    headers = {
+        'Authorization': f'App {API_KEY}',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
     }
+
+    conn.request("POST", "/sms/2/text/advanced", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    return json.loads(data.decode("utf-8"))
