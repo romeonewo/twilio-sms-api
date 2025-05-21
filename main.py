@@ -4,11 +4,11 @@ from services.sms import send_sms
 
 app = FastAPI(
     title="Twilio SMS API",
-    description="A professional API for sending SMS using Twilio and FastAPI.",
+    description="Send SMS messages using Twilio + FastAPI.",
     version="1.0.0"
 )
 
-@app.post("/send-sms", summary="Send an SMS message using Twilio")
+@app.post("/send-sms", summary="Send an SMS")
 def send_sms_endpoint(payload: SMSRequest):
     try:
         result = send_sms(payload.to, payload.message)
