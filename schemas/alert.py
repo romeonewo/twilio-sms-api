@@ -5,9 +5,9 @@ from typing import Optional
 class AlertRequest(BaseModel):
     title: str = Field(..., min_length=1, max_length=255)
     message: str = Field(..., min_length=1)
-    alert_type: str = Field(..., regex="^(emergency|warning|info|weather|health|security)$")
-    language: Optional[str] = Field("en", regex="^(en|ewe|twi)$")
-    priority: Optional[str] = Field("medium", regex="^(low|medium|high|critical)$")
+    alert_type: str = Field(..., pattern="^(emergency|warning|info|weather|health|security)$")
+    language: Optional[str] = Field("en", pattern="^(en|ewe|twi)$")
+    priority: Optional[str] = Field("medium", pattern="^(low|medium|high|critical)$")
     is_active: Optional[bool] = True
 
 class AlertResponse(BaseModel):
@@ -28,7 +28,7 @@ class AlertResponse(BaseModel):
 class AlertUpdate(BaseModel):
     title: Optional[str] = Field(None, min_length=1, max_length=255)
     message: Optional[str] = Field(None, min_length=1)
-    alert_type: Optional[str] = Field(None, regex="^(emergency|warning|info|weather|health|security)$")
-    language: Optional[str] = Field(None, regex="^(en|ewe|twi)$")
-    priority: Optional[str] = Field(None, regex="^(low|medium|high|critical)$")
+    alert_type: Optional[str] = Field(None, pattern="^(emergency|warning|info|weather|health|security)$")
+    language: Optional[str] = Field(None, pattern="^(en|ewe|twi)$")
+    priority: Optional[str] = Field(None, pattern="^(low|medium|high|critical)$")
     is_active: Optional[bool] = None
